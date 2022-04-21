@@ -7,6 +7,7 @@ namespace WebAPITest.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        News news = new();
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -31,13 +32,31 @@ namespace WebAPITest.Controllers
 
         public IActionResult News()
         {
-            News news = new();
-            news.GetNews();
-
             List<News> newslist = new();
             foreach (var item in news.GetNews())
             {
                 newslist.Add(new News(item));
+            }
+            return View(newslist);
+        }
+
+        public IActionResult SearchNews()
+        {
+            List<News> newslist = new();
+            foreach (var item in news.GetNews())
+            {
+                newslist.Add(new News(item));
+            }
+            return View(newslist);
+        }
+        
+        [HttpGet]
+        public IActionResult SearchNews(string search)
+        {
+            List<News> newslist = new();
+            foreach (var article in news.SearchNews(search))
+            {
+                newslist.Add(new News(article));
             }
             return View(newslist);
         }

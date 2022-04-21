@@ -1,0 +1,49 @@
+﻿@model List<News>
+
+@{
+    ViewData["Title"] = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Search</h1><hr/>
+
+@using (Html.BeginForm("SearchNews", "Home", FormMethod.Get))
+{
+   <form method="get" id="Search" action="/Home/SearchNews">
+    <p class="font-weight-bold">Search: </p>
+    <input type="text" class="form-control" name="search" id="search" />
+
+        <button type="submit"
+                value="Submit"
+                class="btn btn-outline-success"
+                formmethod="get">
+            Search
+        </button>
+    </form>
+}
+
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Source</th>
+            <th>Release date</th>
+            <th>Description</th>
+            <th>Url</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>@item.Title</td>
+            <td>@item.SourceName</td>
+            <td>@item.ReleaseDate</td>
+            <td>@item.Description</td>
+            <td>@item.Url</td>
+        </tr>
+}
+    </tbody>
+</table>
