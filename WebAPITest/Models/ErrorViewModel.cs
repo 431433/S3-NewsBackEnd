@@ -1,4 +1,4 @@
-namespace WebAPITest.Models
+namespace BackEnd.Models
 {
     public class ErrorViewModel
     {
