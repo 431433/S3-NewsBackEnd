@@ -97,5 +97,37 @@ namespace WebAPITest.Models
             }
             return newslist;
         }
+
+        public List<Article> SearchNewsDate(string search, DateTime date)
+        {
+            var newsApiClient = new NewsApiClient("64526745974a43a68186465bb4bcc8be");
+            var articlesResponse = newsApiClient.GetEverything(new EverythingRequest
+            {
+                Q = search,
+                SortBy = SortBys.Popularity,
+                Language = Languages.EN,
+                From = new DateTime(date.Ticks)
+            });
+            if (articlesResponse.Status == Statuses.Ok)
+            {
+                // total results found
+                Amount = articlesResponse.TotalResults;
+
+                foreach (var article in articlesResponse.Articles)
+                {
+                    // title
+                    Title = article.Title;
+                    //source
+                    SourceName = article.Source.Name;
+                    // description
+                    Description = article.Description;
+                    //release date
+                    ReleaseDate = (DateTime)article.PublishedAt;
+                    Url = article.Url;
+                    newslist.Add(article);
+                }
+            }
+            return newslist;
+        }
     }
 }

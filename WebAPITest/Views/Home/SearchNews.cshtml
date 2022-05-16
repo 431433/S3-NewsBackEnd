@@ -1,4 +1,5 @@
-﻿@model List<News>
+﻿@using BackEnd.Models
+@model List<News>
 
 @{
     ViewData["Title"] = "Search";
@@ -42,7 +43,8 @@
             <td>@item.SourceName</td>
             <td>@item.ReleaseDate</td>
             <td>@item.Description</td>
-            <td>@item.Url</td>
+            <a src=@item.Url><td>linkje</td></a>
+            
         </tr>
 }
     </tbody>
