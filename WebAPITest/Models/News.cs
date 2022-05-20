@@ -14,6 +14,7 @@ namespace WebAPITest.Models
         public DateTime ReleaseDate = DateTime.Today;
         public string Search { get; private set; }
         public string Image { get; private set; }
+        public int Amount { get; private set; }
     
         public List<Article> newslist = new();
 
@@ -24,7 +25,7 @@ namespace WebAPITest.Models
         {
             Item = item;
         }
-        public News(Article news)
+        public News(Article news, int amount)
         {
             Title = news.Title;
             SourceName = news.Source.Name;
@@ -32,6 +33,7 @@ namespace WebAPITest.Models
             ReleaseDate = (DateTime)news.PublishedAt;
             Url = news.Url;
             Image = news.UrlToImage;
+            Amount = amount;
         }
 
         public object Item { get; }

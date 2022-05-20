@@ -13,11 +13,13 @@ namespace BackEnd.Controllers
 
         public JsonResult News()
         {
+            int amount = 0;
             List<News> newslist = new();
             
             foreach (var item in news.GetNews())
             {
-                newslist.Add(new News(item));
+                amount += 11;
+                newslist.Add(new News(item, amount));
             }
             //var Articles = JsonConvert.SerializeObject(newslist);
             
