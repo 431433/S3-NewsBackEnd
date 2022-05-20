@@ -13,16 +13,17 @@ namespace BackEnd.Controllers
 
         public JsonResult News()
         {
+            int amount = 0;
             List<News> newslist = new();
+            
             foreach (var item in news.GetNews())
             {
-                newslist.Add(new News(item));
+                amount += 11;
+                newslist.Add(new News(item, amount));
             }
-            string Articles = JsonConvert.SerializeObject(new
-            {
-                newslist
-            });
-            return Json(Articles);
+            //var Articles = JsonConvert.SerializeObject(newslist);
+            
+            return Json(newslist);
         }
 
         public JsonResult Search(string search)
@@ -32,10 +33,8 @@ namespace BackEnd.Controllers
             {
                 newslist.Add(new News(article));
             }
-            string Articles = JsonConvert.SerializeObject(new
-            {
-                newslist
-            });
+            var Articles = JsonConvert.SerializeObject(newslist);
+
             return Json(Articles);
         }
 
@@ -46,10 +45,8 @@ namespace BackEnd.Controllers
             {
                 newslist.Add(new News(article));
             }
-            string Articles = JsonConvert.SerializeObject(new
-            {
-                newslist
-            });
+            var Articles = JsonConvert.SerializeObject(newslist);
+
             return Json(Articles);
         }
 
@@ -60,11 +57,9 @@ namespace BackEnd.Controllers
             {
                 newsArticles.Add(new News(article));
             }
-            string hotArticles = JsonConvert.SerializeObject(new
-            {
-                newsArticles
-            });
-            return Json(hotArticles);
+            var Articles = JsonConvert.SerializeObject(newsArticles);
+
+            return Json(Articles);
         }
     }
 }
