@@ -1,7 +1,4 @@
-﻿using BackEnd.Models;
-using Microsoft.AspNetCore.Mvc;
-using NewsAPI.Constants;
-using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebAPITest.Models;
 
 namespace BackEnd.Controllers
@@ -13,27 +10,30 @@ namespace BackEnd.Controllers
         public JsonResult GetWarMainArticle()
         {
             List<News> articles = new();
-            
+            int amount = 0;
+
             foreach (var article in news.SearchNews("War"))
             {
+                amount += 1;
                 if (articles.Count != 1)
                 {
-                    articles.Add(new News(article));
+                    articles.Add(new News(article, amount));
                 }
             }
-            //var Articles = JsonConvert.SerializeObject(newslist);
-            
             return Json(articles);
         }
 
        public JsonResult GetWarArticles()
         {
             List<News> articles = new();
+            int amount = 0;
 
             foreach (var article in news.SearchNews("War"))
             {
-                articles.Add(new News(article));
+                amount += 1;
+                articles.Add(new News(article, amount));
             }
+            articles.Remove(articles[0]);
             return Json(articles);
         }
     }

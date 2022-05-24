@@ -14,7 +14,6 @@ namespace WebAPITest.Models
         public DateTime ReleaseDate = DateTime.Today;
         public string Search { get; private set; }
         public string Image { get; private set; }
-        public int Amount { get; private set; }
     
         public List<Article> newslist = new();
 
@@ -76,7 +75,7 @@ namespace WebAPITest.Models
            var articlesResponse = newsApiClient.GetEverything(new EverythingRequest
             {
                 Q = search,
-                SortBy = SortBys.Popularity,
+                SortBy = SortBys.Relevancy,
                 Language = Languages.EN,
                 From = new DateTime(ReleaseDate.Ticks)
             });
