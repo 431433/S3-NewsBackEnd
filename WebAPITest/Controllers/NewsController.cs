@@ -1,7 +1,4 @@
-﻿using BackEnd.Models;
-using Microsoft.AspNetCore.Mvc;
-using NewsAPI.Constants;
-using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebAPITest.Models;
 
 namespace BackEnd.Controllers
@@ -9,7 +6,6 @@ namespace BackEnd.Controllers
     public class NewsController : Controller
     {
         readonly News news = new();
-        readonly HotTopics hotTopics = new();
 
         public JsonResult News()
         {
@@ -18,7 +14,7 @@ namespace BackEnd.Controllers
             
             foreach (var item in news.GetNews())
             {
-                amount += 11;
+                amount += 1;
                 newslist.Add(new News(item, amount));
             }
             //var Articles = JsonConvert.SerializeObject(newslist);

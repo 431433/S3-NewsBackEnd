@@ -108,7 +108,7 @@ namespace WebAPITest.Models
             var articlesResponse = newsApiClient.GetEverything(new EverythingRequest
             {
                 Q = search,
-                SortBy = SortBys.Popularity,
+                SortBy = SortBys.Relevancy,
                 Language = Languages.EN,
                 From = new DateTime(date.Ticks)
             });
@@ -128,6 +128,39 @@ namespace WebAPITest.Models
                     //release date
                     ReleaseDate = (DateTime)article.PublishedAt;
                     Url = article.Url;
+                    newslist.Add(article);
+                }
+            }
+            return newslist;
+        }
+
+        public List<Article> SearchNewsLatest(string search)
+        {
+            var newsApiClient = new NewsApiClient("64526745974a43a68186465bb4bcc8be");
+            var articlesResponse = newsApiClient.GetEverything(new EverythingRequest
+            {
+                Q = search,
+                SortBy = SortBys.PublishedAt,
+                Language = Languages.EN,
+                From = new DateTime(ReleaseDate.Ticks)
+            });
+            if (articlesResponse.Status == Statuses.Ok)
+            {
+                // total results found
+                Amount = articlesResponse.TotalResults;
+
+                foreach (var article in articlesResponse.Articles)
+                {
+                    // title
+                    Title = article.Title;
+                    //source
+                    SourceName = article.Source.Name;
+                    // description
+                    Description = article.Description;
+                    //release date
+                    ReleaseDate = (DateTime)article.PublishedAt;
+                    Url = article.Url;
+                    Image = article.UrlToImage;
                     newslist.Add(article);
                 }
             }
