@@ -31,7 +31,7 @@ namespace BackEnd.Models
             using MySqlConnection con = new(connectionString);
             con.Open();
 
-            MySqlCommand cmd = new($" SELECT `Comment` FROM `reviews` WHERE `Title` = ?title", con);
+            MySqlCommand cmd = new($" SELECT `Comment`, `Grade` FROM `reviews` WHERE `Title` = ?title", con);
             cmd.Parameters.AddWithValue("?title", title);
 
             MySqlDataReader reader = cmd.ExecuteReader();
@@ -39,6 +39,7 @@ namespace BackEnd.Models
             {
                 Rating rating = new();
                 rating.Comment = reader["Comment"].ToString();
+                rating.Grade = int.Parse(reader["Grade"].ToString());
                 articleReviews.Add(rating);
             }
             reader.Close();
@@ -60,18 +61,13 @@ namespace BackEnd.Models
             while (reader.Read())
             {
                 int articleGrade;
-                articleGrade = int.Parse(reader["Comment"].ToString());
+                articleGrade = int.Parse(reader["Grade"].ToString());
                 grades.Add(articleGrade);
             }
             reader.Close();
 
-            return CalculateAverage(grades);
-        }
-
-        public int CalculateAverage(List<int> grades)
-        {
-            //Get grades van database
-            return (int)Queryable.Average(grades.AsQueryable());
+            int grade = (int)Queryable.Average(grades.AsQueryable());
+            return grade; 
         }
     }
 }

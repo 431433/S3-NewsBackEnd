@@ -26,6 +26,7 @@ namespace BackEnd.Controllers
             return "";
         }
 
+        [HttpGet]
         public JsonResult GetReviews(string title)
         {
             List<Rating> reviews = new();
@@ -38,11 +39,10 @@ namespace BackEnd.Controllers
             return Json(reviews);
         }
 
+        [HttpGet]
         public JsonResult GetGrade(string title)
         {
-            _rating.GetGrades(title);
-
-            return Json(_rating.Grade);
+            return Json(_rating.GetGrades(title));
         }
     }
 }
