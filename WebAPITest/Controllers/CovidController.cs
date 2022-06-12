@@ -10,15 +10,31 @@ namespace BackEnd.Controllers
     {
         readonly News news = new();
 
-        public JsonResult GetCovidNews()
+        public JsonResult GetCovidNewsLatest()
         {
+            int amount = 0;
             List<News> articles = new();
             
-            foreach (var article in news.SearchNews("Covid"))
+            foreach (var article in news.SearchNewsLatest("Covid"))
             {
-                articles.Add(new News(article));
+                amount += 1;
+                articles.Add(new News(article, amount));
             }
             
+            return Json(articles);
+        }
+
+        public JsonResult GetCovidNewsPopular()
+        {
+            int amount = 0;
+            List<News> articles = new();
+
+            foreach (var article in news.SearchNews("Covid"))
+            {
+                amount += 1;
+                articles.Add(new News(article, amount));
+            }
+
             return Json(articles);
         }
     }

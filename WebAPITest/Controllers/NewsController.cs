@@ -1,7 +1,4 @@
-﻿using BackEnd.Models;
-using Microsoft.AspNetCore.Mvc;
-using NewsAPI.Constants;
-using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebAPITest.Models;
 
 namespace BackEnd.Controllers
@@ -9,7 +6,6 @@ namespace BackEnd.Controllers
     public class NewsController : Controller
     {
         readonly News news = new();
-        readonly HotTopics hotTopics = new();
 
         public JsonResult News()
         {
@@ -18,7 +14,7 @@ namespace BackEnd.Controllers
             
             foreach (var item in news.GetNews())
             {
-                amount += 11;
+                amount += 1;
                 newslist.Add(new News(item, amount));
             }
             //var Articles = JsonConvert.SerializeObject(newslist);
@@ -28,38 +24,26 @@ namespace BackEnd.Controllers
 
         public JsonResult Search(string search)
         {
+            int amount = 0;
             List<News> newslist = new();
             foreach (var article in news.SearchNews(search))
             {
-                newslist.Add(new News(article));
+                amount += 11;
+                newslist.Add(new News(article, amount));
             }
-            var Articles = JsonConvert.SerializeObject(newslist);
-
-            return Json(Articles);
+            return Json(newslist);
         }
 
         public JsonResult SearchDate(string search, DateTime date)
         {
+            int amount = 0;
             List<News> newslist = new();
             foreach (var article in news.SearchNewsDate(search, date))
             {
-                newslist.Add(new News(article));
+                amount += 11;
+                newslist.Add(new News(article, amount));
             }
-            var Articles = JsonConvert.SerializeObject(newslist);
-
-            return Json(Articles);
-        }
-
-        public JsonResult HotTopics(string subject, DateTime date, Languages language)
-        {
-            List<News> newsArticles = new();
-            foreach (var article in hotTopics.NavBar(Languages.EN, DateTime.Today, "War"))
-            {
-                newsArticles.Add(new News(article));
-            }
-            var Articles = JsonConvert.SerializeObject(newsArticles);
-
-            return Json(Articles);
+            return Json(newslist);
         }
     }
 }
