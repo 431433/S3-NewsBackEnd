@@ -1,73 +1,46 @@
-﻿using MySql.Data.MySqlClient;
-using System;
-using System.Linq;
-using System.Collections.Generic;
+﻿using BackEndContract;
+using BackEndFactory;
+using BackEndDTO;
 
 namespace BackEnd.Models
 {
-    public class Rating
+    public class Rating 
     {
         public string Comment { get; set; } 
         public string Title { get; set; }
         public int Grade { get; set; }
 
-        private readonly string connectionString = "Server=studmysql01.fhict.local;Uid=dbi431433;Database=dbi431433;Pwd=Fontys1234;SSL Mode=None";
-        public void RateArticle(string comment, string title, int grade)
+        private readonly IRatingDAL ratingdal;
+
+        public Rating()
         {
-            using MySqlConnection con = new(connectionString);
-            con.Open();
-
-            MySqlCommand cmd = new($"INSERT INTO `reviews`(`Title`, `Grade`, `Comment`) VALUES (?title, ?grade, ?comment)", con);
-            cmd.Parameters.AddWithValue("?title", title);
-            cmd.Parameters.AddWithValue("?grade", grade);
-            cmd.Parameters.AddWithValue("?comment", comment);
-
-            MySqlDataReader reader = cmd.ExecuteReader();
+            ratingdal = RatingFactory.RatingInterface();
         }
 
-        public List<Rating> GetArticleReviews(string title)
+        public Rating(IRatingDAL _ratingDAL)
         {
-            List<Rating> articleReviews = new();
-            using MySqlConnection con = new(connectionString);
-            con.Open();
+            ratingdal = _ratingDAL;
+        }
 
-            MySqlCommand cmd = new($" SELECT `Comment`, `Grade` FROM `reviews` WHERE `Title` = ?title", con);
-            cmd.Parameters.AddWithValue("?title", title);
+        public void RateArticle(string comment, string title, int grade)
+        {
+            ratingdal.RateArticle(comment, title, grade);
+        }
 
-            MySqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
+        public List<RatingDTO> GetArticleReviews(string title)
+        {
+            List<RatingDTO> articleReviews = new List<RatingDTO>();
+            foreach( var review in ratingdal.GetArticleReviews(title))
             {
-                Rating rating = new();
-                rating.Comment = reader["Comment"].ToString();
-                rating.Grade = int.Parse(reader["Grade"].ToString());
-                articleReviews.Add(rating);
+                articleReviews.Add(new RatingDTO(review));
             }
-            reader.Close();
-
             return articleReviews;
         }
 
 
         public int GetGrades(string title)
         {
-            List<int> grades = new();
-            using MySqlConnection con = new(connectionString);
-            con.Open();
-
-            MySqlCommand cmd = new($" SELECT `Grade` FROM `reviews` WHERE `Title` = ?title", con);
-            cmd.Parameters.AddWithValue("?title", title);
-
-            MySqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                int articleGrade;
-                articleGrade = int.Parse(reader["Grade"].ToString());
-                grades.Add(articleGrade);
-            }
-            reader.Close();
-
-            int grade = (int)Queryable.Average(grades.AsQueryable());
-            return grade; 
+            return ratingdal.GetGrades(title); 
         }
     }
 }

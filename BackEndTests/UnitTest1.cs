@@ -1,10 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using BackEnd.Controllers;
 
-namespace Testing
+namespace BackEndTests
 {
     [TestClass]
-    public class UnitTest2
+    public class UnitTest1
     {
         [TestMethod]
         public void TestMethod1()
