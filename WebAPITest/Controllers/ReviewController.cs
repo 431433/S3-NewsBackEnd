@@ -1,5 +1,6 @@
 ﻿using BackEnd.Models;
 using Microsoft.AspNetCore.Mvc;
+using BackEndDTO;
 
 namespace BackEnd.Controllers
 {
@@ -29,7 +30,7 @@ namespace BackEnd.Controllers
         [HttpGet]
         public JsonResult GetReviews(string title)
         {
-            List<Rating> reviews = new();
+            List<RatingDTO> reviews = new();
 
             foreach (var review in _rating.GetArticleReviews(title))
             {
