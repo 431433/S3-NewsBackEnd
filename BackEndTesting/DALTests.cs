@@ -36,6 +36,17 @@ namespace BackEndTesting
         }
 
         [TestMethod]
+        public void FindNoArticle()
+        {
+            rating.RateArticle("Perfect", "News", 10);
+            rating.RateArticle("Sucks", "News", 1);
+            rating.RateArticle("Perfect", "News2", 10);
+            rating.RateArticle("Sucks", "News2", 1);
+
+            Assert.AreEqual(0, rating.GetArticleReviews("Nope").Count);
+        }
+
+        [TestMethod]
         public void AverageGrade()
         {
             rating.RateArticle("Perfect", "News", 9);
